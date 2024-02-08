@@ -58,27 +58,38 @@ while True:
 
     counter = []
     list2 = []
-    for i, polyline in enumerate(polylines):
-        list2.append(i)
-        # print("testing polyline enumeratte --> ", i)
-        cv2.polylines(frame,[polyline], True, (0,255,0), 2)
-        ptr(frame,f'{area_name[i]}', tuple(polyline[0]),1,1)
+    empty_spaces = ""
 
-        for i in list1:
-            # print(i)
-            cx1 = i[0]
-            cy1 = i[1]
-            result = cv2.pointPolygonTest(polyline,((cx1,cy1)),False)
-            # print(result)
+    for i, polyline in enumerate(polylines):
+        cv2.polylines(frame, [polyline], True, (0, 255, 0), 2)
+        ptr(frame, f'{area_name[i]}', tuple(polyline[0]), 1, 1)
+
+        area_empty = True
+
+        for j, centroid in enumerate(list1):
+            cx1 = centroid[0]
+            cy1 = centroid[1]
+            result = cv2.pointPolygonTest(polyline, ((cx1, cy1)), False)
+
             if result >= 0:
-                cv2.circle(frame,(cx1,cy1),3,(255,0,0),-1)
-                cv2.polylines(frame,[polyline], True, (0,0,255), 2)
+                cv2.circle(frame, (cx1, cy1), 3, (255, 0, 0), -1)
+                cv2.polylines(frame, [polyline], True, (0, 0, 255), 2)
                 counter.append(cx1)
+                list2.append(i)
+                area_empty = False
+                break
+        
+        if area_empty:
+            print("Area", area_name[i], "is empty.")
+            empty_spaces += area_name[i] + ", "
+
+        # ptr(frame, f'CarCounter: - {empty_spaces}, (50, 150 + i * 40), 2, 2)
 
     car_count = len(counter)
-    free_space = len(list2) - car_count
-    ptr(frame,f'CarCounter: - {car_count}', (50,60),2,2)
-    ptr(frame,f'Free Space: - {free_space}', (51,100),2,2)
+    free_space = len(polylines) - len(list2)
+    ptr(frame, f'Occupied: - {car_count}', (50, 60), 2, 2)
+    ptr(frame, f'Available: - {free_space}', (51, 100), 2, 2)
+    ptr(frame, f'Empty Spaces: {empty_spaces}', (52, 140), 2, 2)
 
     cv2.imshow('FRAME', frame)
     key = cv2.waitKey(1) & 0xFF
@@ -88,4 +99,3 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-
