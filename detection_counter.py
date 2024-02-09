@@ -20,7 +20,7 @@ class_list = data.split("\n")
 model = YOLO('yolov8s.pt')
 
 # Loading the video feed - Plaksha_Parking2 to be used for Plaksha
-cap = cv2.VideoCapture('Plaksha_Parking2.mp4')
+cap = cv2.VideoCapture('')
 
 count = 0
 
