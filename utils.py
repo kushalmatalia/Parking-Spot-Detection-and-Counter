@@ -5,19 +5,20 @@ def putTextRect(img, text, pos, scale=3, thickness=1, colorT=(255, 255, 255),
                 offset=3, border=None, colorB=(0, 255, 0)):
     """
     Creates Text with Rectangle Background
-    :param img: Image to put text rect on
-    :param text: Text inside the rect
-    :param pos: Starting position of the rect x1,y1
-    :param scale: Scale of the text
-    :param thickness: Thickness of the text
-    :param colorT: Color of the Text
-    :param colorR: Color of the Rectangle
-    :param font: Font used. Must be cv2.FONT....
-    :param offset: Clearance around the text
-    :param border: Outline around the rect
-    :param colorB: Color of the outline
-    :return: image, rect (x1,y1,x2,y2)
+    Parameters - 
+        :img: The image where the text and rectangle will be added.
+        :text: The text to be displayed inside the rectangle.
+        :pos: The starting position of the rectangle (top-left corner coordinates x1, y1).
+        :scale: The size of the text.
+        :thickness: The thickness of the text.
+        :colorT: The color of the text.
+        :colorR: The color of the rectangle.
+        :font: The font used for the text, specified by cv2.FONT_....
+        :offset: The clearance around the text inside the rectangle.
+        :border: The thickness of the outline around the rectangle.
+        :colorB: The color of the outline.
     """
+    # Calculations to be done in order to set the rectangle background and the text display
     ox, oy = pos
     (w, h), _ = cv2.getTextSize(text, font, scale, thickness)
 
