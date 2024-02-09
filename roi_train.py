@@ -19,7 +19,7 @@ paused = False
 try:
     with open("polyCords","rb") as f:
                 data = pickle.load(f)
-                polylines,area_name = data['polylines'], data['area_name']
+                polylines, area_name = data['polylines'], data['area_name']
 except:
     polylines = []
 
@@ -37,17 +37,17 @@ def draw(event, x, y, flags, param):
     # Left Mouse Button event
     # Drawing polygons and creating the RoIs
     # Storing the initial coordinates of the mouse click to start the polyline
-    if event==cv2.EVENT_LBUTTONDOWN:
-        points=[(x,y)]
+    if event == cv2.EVENT_LBUTTONDOWN:
+        points = [(x,y)]
         paused = not paused
 
     # Storing all the points while the mouse is dragged to draw the polygon
-    elif event==cv2.EVENT_MOUSEMOVE:
+    elif event == cv2.EVENT_MOUSEMOVE:
         if drawing:
             points.append((x,y))
 
     # Storing all the polygon coordinates along with the area name (which is generated automatically - 1,2,...) while the mouse button is released
-    elif event==cv2.EVENT_LBUTTONUP:
+    elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
         current_name = str(len(area_name) + 1)
         area_name.append(current_name)
@@ -109,14 +109,14 @@ while True:
             continue
 
     # Setting frame size to 1020x500
-    frame=cv2.resize(frame,(1020,500))
+    frame = cv2.resize(frame,(1020,500))
 
     # Drawing the polygons i.e. the RoIs, which are red in color
     # Appending the area names by default as numbers
     for i, polyline in enumerate(polylines):
         print("testing polyline enumeratte --> ", i)
-        cv2.polylines(frame,[polyline], True, (0,0,255), 2)
-        ptr(frame,f'{area_name[i]}', tuple(polyline[0]),1,1)
+        cv2.polylines(frame, [polyline], True, (0,0,255), 2)
+        ptr(frame, f'{area_name[i]}', tuple(polyline[0]),1,1)
 
     cv2.imshow('FRAME', frame)
     cv2.setMouseCallback('FRAME', draw)

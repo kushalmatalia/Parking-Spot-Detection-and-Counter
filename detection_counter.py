@@ -9,7 +9,7 @@ from utils import putTextRect as ptr
 # Loading the polylines list data and the area_name data
 with open("polyCords","rb") as f:
         data = pickle.load(f)
-        polylines,area_name = data['polylines'], data['area_name']
+        polylines, area_name = data['polylines'], data['area_name']
 
 # Loading coco.txt data, COCO i.e. the Common Objects in Context, has by default 80 classes of objects pre-trained
 my_file = open("coco.txt", "r")
@@ -17,12 +17,12 @@ data = my_file.read()
 class_list = data.split("\n")
 
 # Loading the YOLO v8 model for Object Detection
-model=YOLO('yolov8s.pt')
+model = YOLO('yolov8s.pt')
 
 # Loading the video feed - Plaksha_Parking2 to be used for Plaksha
-cap=cv2.VideoCapture('Plaksha_Parking2.mp4')
+cap = cv2.VideoCapture('Plaksha_Parking2.mp4')
 
-count=0
+count = 0
 
 # Reading the video feed frame by frame, and when completed, set to the beginning to again start the loop
 while True:
@@ -36,7 +36,7 @@ while True:
        continue
 
     # Setting frame size to 1020x500
-    frame=cv2.resize(frame,(1020,500))
+    frame = cv2.resize(frame,(1020,500))
     frame_copy = frame.copy()
 
     # Predicting the YOLO model on the every fram of the video feed
@@ -49,7 +49,7 @@ while True:
     px = pd.DataFrame(a).astype("float")
     
     list1 = []
-    for index,row in px.iterrows():
+    for index, row in px.iterrows():
 
         # Storing all the coordinates of the bounding box formed and the class information detected
         x1 = int(row[0])
@@ -62,13 +62,13 @@ while True:
         # print("Object identified as -> ",class_list[d])
 
         # Finding the middle point of the bounding box, required to do further calculations
-        cx = int(x1+x2)//2
-        cy = int(y1+y2)//2
+        cx = int(x1 + x2) // 2
+        cy = int(y1 + y2) // 2
 
         # Filtering the vehicles required to be detected and appending in the list
         # Can uncomment the code line to form the bounding box created around the detected object, here vehicles filterd above
         if 'car' in c or 'cars' in c or 'truck' in c or 'trucks' in c or 'bus' in c or 'buss' in c:
-            list1.append([cx,cy])
+            list1.append([cx, cy])
             # cv2.rectangle(frame,(x1,y1),(x2,y2),(255,255,255),2)
 
     counter = []
@@ -118,9 +118,6 @@ while True:
     key = cv2.waitKey(1) & 0xFF
 
     # Keyboard event, where:
-
-
-    
     # key 'q' -> to stop the video feed and exit
     if key == ord('q'):
         break
